@@ -1,24 +1,35 @@
 'use strict';
 
-let x = 0;
-//defined score here to make it easier
 let score = 0;
 let life = 15;
-const randomNumber = Math.floor(Math.random() * 20 + 1);
-//hard way to creat random number
-// const randomNum = function () {
-//   if (x === 0) {
-//     //+1 to make 20 possible and 0 impossible
-//     return (x = Math.floor(Math.random() * 20 + 1));
-//   } else {
-//     return x;
-//   }
-// };
+let highScore = 0;
+let randomNumber = Math.floor(Math.random() * 20 + 1);
 
-//add score the old way
-// var addNumber = function (num) {
-//   return num + 1;
-// };
+const lastLife = function () {
+  if (life > 1) {
+    life--;
+    document.querySelector('.life').textContent = life;
+  } else {
+    life = 0;
+    document.querySelector('.life').textContent = life;
+    document.querySelector('.message').textContent = '💔 You Lose!';
+    document.body.style.backgroundColor = 'red';
+    //time function is not ready yet
+    //window.setTimeout(location.reload(), 15000);
+  }
+};
+const restGame = function () {
+  score = 0;
+  life = 15;
+  document.querySelector('.number').textContent = '?';
+  document.querySelector('.message').textContent = 'Start guessing...';
+  document.querySelector('.guess').textContent = '';
+  document.querySelector('.score').textContent = score;
+  document.querySelector('.life').textContent = life;
+  document.querySelector('body').style.backgroundColor = '#222';
+  document.querySelector('.number').style.width = '15rem';
+  randomNumber = Math.floor(Math.random() * 20 + 1);
+};
 console.log(randomNumber);
 
 document.querySelector('.check').addEventListener('click', function () {
@@ -26,58 +37,27 @@ document.querySelector('.check').addEventListener('click', function () {
 
   if (!guess) {
     document.querySelector('.message').textContent = '😒😒 No Number!';
-  } else {
-    if (guess == randomNumber) {
-      document.querySelector('.message').textContent = '😂😘 Correct Number!';
-      document.querySelector('.number').textContent = randomNumber;
+  } else if (guess == randomNumber) {
+    document.querySelector('.message').textContent = '😂😘 Correct Number!';
+    document.querySelector('.number').textContent = randomNumber;
+    score++;
+    document.querySelector('.score').textContent = score;
+    //differet way to change background
+    //document.body.style.backgroundColor = 'green';
+    document.querySelector('body').style.backgroundColor = '#60b347';
+    document.querySelector('.number').style.width = '30rem';
 
-      // Hard way to change score
-      // let scoreTex = document.querySelector('.score').textContent;
-      // let ScoreNum = Number(scoreTex);
-      // document.querySelector('.score').textContent = String(
-      //   addNumber(ScoreNum)
-      // );
-      //Easier way to change score
-      score++;
-      document.querySelector('.score').textContent = score;
-      //differet way to change background
-      //document.body.style.backgroundColor = 'green';
-      document.querySelector('body').style.backgroundColor = '#60b347';
-      document.querySelector('.number').style.width = '30rem';
-    } else {
-      if (guess < randomNumber) {
-        document.querySelector('.message').textContent = '🔞 Too Short!';
-        if (life > 1) {
-          life--;
-          document.querySelector('.life').textContent = life;
-        } else {
-          life = 0;
-          document.querySelector('.life').textContent = life;
-          document.querySelector('.message').textContent = '💔 You Lose!';
-          document.body.style.backgroundColor = 'red';
-          //time function is not ready yet
-          //window.setTimeout(location.reload(), 15000);
-        }
-      } else {
-        if (guess > randomNumber) {
-          document.querySelector('.message').textContent = '🔞 Too long!';
-          if (life > 1) {
-            life--;
-            document.querySelector('.life').textContent = life;
-          } else {
-            life = 0;
-            document.querySelector('.life').textContent = life;
-            document.querySelector('.message').textContent = '💔 You Lose!';
-            document.body.style.backgroundColor = 'red';
-            //time function is not ready yet
-            //window.setInterval(location.reload(), 9000);
-          }
-        }
-      }
+    if (score > highScore) {
+      highScore = score;
+      document.querySelector('.highscore').textContent = highScore;
     }
+  } else if (gues !== randomNumber) {
+    document.querySelector('.message').textContent =
+      guess > randomNumber ? '🔞 Too long!' : '🔞 Too Short!';
+    lastLife();
   }
 });
 
 document.querySelector('.again').addEventListener('click', function () {
-  location.reload();
+  restGame();
 });
