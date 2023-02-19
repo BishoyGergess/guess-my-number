@@ -51,7 +51,7 @@ document.querySelector('.check').addEventListener('click', function () {
       highScore = score;
       document.querySelector('.highscore').textContent = highScore;
     }
-  } else if (gues !== randomNumber) {
+  } else if (guess !== randomNumber) {
     document.querySelector('.message').textContent =
       guess > randomNumber ? '🔞 Too long!' : '🔞 Too Short!';
     lastLife();
